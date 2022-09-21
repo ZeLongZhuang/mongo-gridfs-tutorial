@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Gridfs File Uploads</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 m-auto">
+                <h1 class="text-center display-4 my-4">Gridfs File Uploads</h1>
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                    <div class="custom-file mb-3">
+                        <label for="file" class="custom-file-label form-label"></label>
+                        <input type="file" name="file" id="file" class="custom-file-input form-control">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <input type="submit" value="Submit" class="btn btn-primary btn-block">
+                    </div>
+                </form>
+                <hr>
+                <% if(files){ %>
+                    <% files.forEach(function(file) { %>
+                        <div class="card card-body mb-3">
+                            <% if(file.isImage) { %>
+                                <img src="image/<%= file.filename %>" alt="">
+                            <% } else if(file.isPDF) { %>
+                                <embed src="document/<%= file.filename %>" width="100%" height="500px"/>
+                            <% } else if(file.isWord) { %>
+                                <p>Can't view office document <%= file.filename %></p>
+                            <% } %>
+                            <form method="GET" action="/download/<%= file._id %>">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-success mt-2">Download</button>
+                                </div>
+                            </form>
+                            <form method="POST" action="/files/<%= file._id %>?_method=DELETE">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-danger mt-2">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p>No files to show</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</body>
+</html>
