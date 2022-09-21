@@ -6,8 +6,6 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const {GridFsStorage} = require('multer-gridfs-storage');
 const methodOverride = require('method-override');
-const fs = require('fs');
-
 const app = express();
 
 // Middleware
